@@ -108,6 +108,11 @@ class Article
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->contenu;
+    }
+
     /**
      * @return Collection<int, Commentaire>
      */

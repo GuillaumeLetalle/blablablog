@@ -2,32 +2,52 @@
 
 namespace App\Controller\Admin;
 
+use DateTime;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
-    #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    #[Route('/list/{idCategorie?}', name: 'app_article_index', methods: ['GET'])]
+    public function index(ArticleRepository $articleRepository, $idCategorie): Response
     {
-        return $this->render('admin/article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
-        ]);
+        if($idCategorie === null){
+            return $this->render('admin/article/index.html.twig', [
+                'articles' => $articleRepository->findAll(),
+            ]);
+        }else{
+            return $this->render('admin/article/index.html.twig', [
+                'articles' => $articleRepository->findBy(['fk_categorie' => $idCategorie]),
+            ]);
+        }
     }
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $date = date('Y-m-d');
+        $format = 'Y-m-d';
+        $date = DateTime::createFromFormat($format, $date);
+
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
+        $article->setDate($date);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $file= $form['image']->getData();
+            if($file){
+                $file_name
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($article);

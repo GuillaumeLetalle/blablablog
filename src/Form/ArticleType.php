@@ -3,9 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Categorie;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class ArticleType extends AbstractType
 {
@@ -13,10 +18,32 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('contenu')
-            ->add('image')
             ->add('titre')
+            ->add('image', FileType::class, [
+                'label' => 'Image(s)',
+                'multiple' => true,
+                'required' => false,
+                'help' =>'Fichier jpg, jpeg, png, ou webp ne dépassant pas 1Mo',
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1048576',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png',
+                            'image/webp',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image. '
+                    ])
+                ]
+            ])
             ->add('date')
-            ->add('fk_categorie')
+            ->add('fk_categorie', EntityType::class,[
+                'label' => 'Categorie',
+                'class' => Categorie::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
             ->add('fk_team')
         ;
     }

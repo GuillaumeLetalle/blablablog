@@ -18,10 +18,10 @@ class Commentaire
     private ?string $contenu = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    private ?user $fk_user = null;
+    private ?User $fk_user = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    private ?article $fk_article = null;
+    private ?Article $fk_article = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
