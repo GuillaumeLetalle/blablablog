@@ -8,9 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Contenu</th>
                 <th>Image</th>
+                <th>Contenu</th>
                 <th>Titre</th>
                 <th>Date</th>
                 <th>actions</th>
@@ -19,9 +18,12 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <td>{{ article.id }}</td>
+                <td>
+                    {%  if article.image !='' %}
+                        <img src="{{ article.image }}" height="50px" width="auto" alt="image de l'article">
+                    {% endif %}
+                </td>
                 <td>{{ article.contenu }}</td>
-                <td>{{ article.image }}</td>
                 <td>{{ article.titre }}</td>
                 <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
                 <td>

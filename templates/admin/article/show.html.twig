@@ -4,24 +4,20 @@
 
 {% block body %}
     <h1>Article</h1>
-
+    <div>
+        {%  if article.image !='' %}
+<img src="{{ article.image }}" height="200px" width="auto" alt="image de l'article">
+        {% endif %}
+    </div>
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ article.titre }}</td>
+        </tr>
             <tr>
                 <th>Contenu</th>
                 <td>{{ article.contenu }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ article.image }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ article.titre }}</td>
             </tr>
             <tr>
                 <th>Date</th>

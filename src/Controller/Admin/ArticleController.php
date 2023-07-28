@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/article')]
+#[Route('/admin/article')]
 class ArticleController extends AbstractController
 {
     #[Route('/list/{idCategorie?}', name: 'app_article_index', methods: ['GET'])]
@@ -46,18 +46,16 @@ class ArticleController extends AbstractController
 
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
-        $article->setDate($date);
+
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article->setDate($date);
+
             $file= $form['image']->getData();
             if($file){
-                $file_name = $fileUploaderService->upload($file);
-                if ($file_name !== null){
-                    $file_path = $publicUploadDir.'/'.$file_name;
-                    $article->setImage($file_path);
-                }
+                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir );
             }
 
             $entityManager->persist($article);
@@ -81,12 +79,22 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Article $article,
+        EntityManagerInterface $entityManager,
+        FileUploaderService $fileUploaderService,
+        $publicUploadDir,
+    ): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file= $form['image']->getData();
+            if($file){
+                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir );
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
@@ -107,5 +115,13 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function doUpload($file, $article, $fileUploaderService, $publicUploadDir ){
+        $file_name = $fileUploaderService->upload($file);
+        if ($file_name !== null){
+            $file_path = $publicUploadDir.'/'.$file_name;
+            $article->setImage($file_path);
+        }
     }
 }
