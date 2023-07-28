@@ -20,13 +20,13 @@ class ArticleType extends AbstractType
             ->add('contenu')
             ->add('titre')
             ->add('image', FileType::class, [
+                'data_class' => null,
                 'label' => 'Image(s)',
-                'multiple' => true,
                 'required' => false,
                 'help' =>'Fichier jpg, jpeg, png, ou webp ne dépassant pas 1Mo',
                 'constraints' => [
                     new File([
-                        'maxSize' => '1048576',
+                        'maxSize' => '10M',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/jpg',

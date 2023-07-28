@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\FileUploaderService;
 use DateTime;
 use App\Entity\Article;
 use App\Form\ArticleType;
@@ -31,8 +32,14 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        FileUploaderService $fileUploaderService,
+        $publicUploadDir,
+    ): Response
     {
+
         $date = date('Y-m-d');
         $format = 'Y-m-d';
         $date = DateTime::createFromFormat($format, $date);
@@ -42,14 +49,17 @@ class ArticleController extends AbstractController
         $article->setDate($date);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
-            $file= $form['image']->getData();
-            if($file){
-                $file_name
-            }
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file= $form['image']->getData();
+            if($file){
+                $file_name = $fileUploaderService->upload($file);
+                if ($file_name !== null){
+                    $file_path = $publicUploadDir.'/'.$file_name;
+                    $article->setImage($file_path);
+                }
+            }
+
             $entityManager->persist($article);
             $entityManager->flush();
 
