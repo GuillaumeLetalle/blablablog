@@ -57,19 +57,19 @@ security:
                     always_remember_me : true
 
         user_secure_area :
-            pattern : ^/user
+            pattern : ^/account
             provider : app_user_provider
             form_login :
                 login_path : user_login
                 check_path : user_login
-                default_target_path : app_user
+                default_target_path : user_login
                 username_parameter : login[email]
                 password_parameter : login[password]
                 enable_csrf : true
             logout :
-                path : app_logout
+                path : app_user_logout
                 # where to redirect after logout
-                target : app_login
+                target : user_login
                 invalidate_session : true
                 # configuring the maximum login attemps (per minute)
             login_throttling :
@@ -85,18 +85,8 @@ security:
 
         main:
             lazy: true
-            provider: app_team_provider
-            custom_authenticator: App\Security\AppTeamAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                target: app_login
-
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
-                always_remember_me: true
+            pattern : ^/
+            provider: app_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -116,7 +106,10 @@ security:
     access_control:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path : ^/user/login, roles : PUBLIC_ACCESS }
+        - { path : ^/user, roles : ROLE_VISITOR }
+        - { path : ^/account/login, roles : PUBLIC_ACCESS }
+        - { path : ^/account, roles : ROLE_USER }
 
 when@test:
     security:
