@@ -2,18 +2,87 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User :
+            algorithm : auto
+        App\Entity\Team :
+            algorithm : auto
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
+        #Definir un compte super admin sans avoir a passé par la base
+        users_in_memory: { memory: null}
         # used to reload user from session & other features (e.g. switch_user)
         app_team_provider:
             entity:
                 class: App\Entity\Team
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
+        # Ajout d'autre user
+        app_user_provider :
+            entity :
+                class : App\Entity\User
+                property : email
+        #Definir les propriétés
+        all_users:
+            chain:
+                providers: [app_team_provider, app_user_provider]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        admin_secure_area :
+            pattern : ^/admin
+            provider : app_team_provider
+            form_login :
+                login_path : app_login
+                check_path : app_login
+                default_target_path : app_admin
+                username_parameter : login[email]
+                password_parameter : login[password]
+                enable_csrf : true
+            logout :
+                path : app_logout
+                # where to redirect after logout
+                target : app_login
+                invalidate_session : true
+                # configuring the maximum login attemps (per minute)
+            login_throttling :
+                    max_attempts : 3
+            custom_authenticator : App\Security\AppTeamAuthenticator
+            entry_point : form_login
+
+            remember_me :
+                    secret : '%kernel.secret%'
+                    lifetime : 604800
+                    path : /
+                    always_remember_me : true
+
+        user_secure_area :
+            pattern : ^/user
+            provider : app_user_provider
+            form_login :
+                login_path : user_login
+                check_path : user_login
+                default_target_path : app_user
+                username_parameter : login[email]
+                password_parameter : login[password]
+                enable_csrf : true
+            logout :
+                path : app_logout
+                # where to redirect after logout
+                target : app_login
+                invalidate_session : true
+                # configuring the maximum login attemps (per minute)
+            login_throttling :
+                    max_attempts : 3
+            custom_authenticator : App\Security\AppUserAuthenticator
+            entry_point : form_login
+
+            remember_me :
+                    secret : '%kernel.secret%'
+                    lifetime : 604800
+                    path : /
+                    always_remember_me : true
+
         main:
             lazy: true
             provider: app_team_provider
