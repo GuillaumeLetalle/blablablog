@@ -19,10 +19,13 @@
         <h1 class="homeTitle">Bienvenue sur BlablaBlog</h1>
     </div>
     <div  class="headerbtn">
-        <a class="inscription" href="{{ path('front_user_new') }}">S'inscrire</a>
-        <a class="connexion" href="{{ path('user_login') }}">Se connecter</a>
+        {% if app.user is null %}
+            <button type="button" class="btn btn-secondary"><a class="inscription" href="{{ path('front_user_new') }}">S'inscrire</a></button>
+            <button type="button" class="btn btn-secondary"><a class="connexion" href="{{ path('user_login') }}">Se connecter</a></button>
+        {% endif %}
         {% if app.user is not null %}
-            <a class="disconnect" href="{{ path('app_user_logout') }}">Déconnection</a>
+            <h3>Salut {{ app.user.firstname }}</h3>
+            <button type="button" class="btn btn-light"><a class="disconnect" href="{{ path('app_user_logout') }}">Déconnection</a></button>
         {% endif %}
     </div>
 </header>

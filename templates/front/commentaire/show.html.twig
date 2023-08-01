@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaire{% endblock %}
+
+{% block body %}
+    <h1>Commentaire</h1>
+    <a href="{{ path('front_commentaire_index') }}">back to list</a>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ commentaire.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <h1> Liste d'articles de la catégorie ????{# {{ 'nameCategorie': categorie.name }} #}</h1>
+    <a class="" href="{{ path('app_home') }}">Accueil</a><br>
+    <a class="" href="{{ path('front_categorie_index') }}">Liste des catégories</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Contenu</th>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>
+                    {%  if article.image !='' %}
+                        <img src="{{ article.image }}" height="50px" width="auto" alt="image de l'article">
+                    {% endif %}
+                </td>
+                <td>{{ article.contenu }}</td>
+                <td>{{ article.titre }}</td>
+                <td>{{ article.date ? article.date|date('d-m-Y') : '' }}</td>
+                <td>
+                    <a href="{{ path('front_article_show', {'id': article.id}) }}">Détail</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

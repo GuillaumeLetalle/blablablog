@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <h1>Article</h1>
+    <div>
+        {%  if article.image !='' %}
+<img src="{{ article.image }}" height="200px" width="auto" alt="image de l'article">
+        {% endif %}
+    </div>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Titre</th>
+            <td>{{ article.titre }}</td>
+        </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ article.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ article.date ? article.date|date('d-m-Y') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('front_article_index') }}">back to list</a><br>
+    <a href="{{ path('front_commentaire_index', {'id': article.id}) }}">Voir les commentaires</a>
+{% endblock %}

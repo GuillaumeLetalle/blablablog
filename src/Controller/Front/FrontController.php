@@ -42,7 +42,7 @@ class FrontController extends AbstractController
             return $this->redirectToRoute('user_login', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('front/new.html.twig', [
+        return $this->render('front/userFront/new.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);

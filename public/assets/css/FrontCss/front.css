@@ -1,5 +1,5 @@
 .entete{
-    background-color: #1cc88a;
+    background-color: #4e73df;
     min-height: 13vh;
 }
 .homeTitle{
@@ -13,13 +13,18 @@
     position: absolute;
     bottom: 0;
     width:100%;
-    background-color: #1cc88a;
+    background-color: #4e73df;
     min-height: 8vh;
 }
 .homePicture{
     text-align: center;
 }
 .imgPicture{
-    margin-top: 10vh;
-    height: 55vh;
+    margin-top: 7vh;
+    height: 35vh;
+    border-radius: 25%;
+}
+a{
+    text-decoration: none;
+    color: whitesmoke;
 }
