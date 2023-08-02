@@ -1,0 +1,27 @@
+{% extends 'account/base_account.html.twig' %}
+
+{% block title %}Commentaire{% endblock %}
+
+{% block body %}
+    <h1>Commentaire</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ commentaire.id }}</td>
+        </tr>
+        <tr>
+            <th>Contenu</th>
+            <td>{{ commentaire.contenu }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('account_commentaire_index') }}">back to list</a>
+
+{% endblock %}

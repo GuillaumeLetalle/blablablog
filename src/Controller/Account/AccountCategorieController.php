@@ -1,28 +1,31 @@
 <?php
-declare(strict_types=1);
 
-namespace App\Controller\Front;
+namespace App\Controller\Account;
 
 use App\Entity\Categorie;
+use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-#[Route('/front/categorie')]
-class FrontCategorieController extends AbstractController
+
+#[Route('/account/categorie')]
+class AccountCategorieController extends AbstractController
 {
-    #[Route('/list', name: 'front_categorie_index', methods: ['GET'])]
+    #[Route('/', name: 'account_categorie_index', methods: ['GET'])]
     public function index(CategorieRepository $categorieRepository): Response
     {
-        return $this->render('front/categorie/index.html.twig', [
+        return $this->render('account/categorie/index.html.twig', [
             'categories' => $categorieRepository->findAll(),
         ]);
     }
 
-    #[Route('/{id}', name: 'front_categorie_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'account_categorie_show', methods: ['GET'])]
     public function show(Categorie $categorie): Response
     {
-        return $this->render('front/categorie/show.html.twig', [
+        return $this->render('account/categorie/show.html.twig', [
             'categorie' => $categorie,
         ]);
     }

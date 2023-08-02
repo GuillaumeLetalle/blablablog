@@ -2,8 +2,9 @@
 
 {% block title %}Article{% endblock %}
 
-{% block body %}
+{% block main %}
     <h1>Article</h1>
+
     <div>
         {%  if article.image !='' %}
 <img src="{{ article.image }}" height="200px" width="auto" alt="image de l'article">
@@ -23,9 +24,13 @@
                 <th>Date</th>
                 <td>{{ article.date ? article.date|date('d-m-Y') : '' }}</td>
             </tr>
+        <tr>
+            <th>Commentaires</th>
+            <td><a href="{{ path('front_commentaire_index', {'idArticle': article.id}) }}">Voir les commentaires</a></td>
+        </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('front_article_index') }}">back to list</a><br>
-    <a href="{{ path('front_commentaire_index', {'id': article.id}) }}">Voir les commentaires</a>
+
+
 {% endblock %}

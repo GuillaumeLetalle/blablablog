@@ -12,21 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/front/commentaire')]
 class FrontCommentaireController extends AbstractController
 {
-    #[Route('/{idArticle?}', name: 'front_commentaire_index', methods: ['GET'])]
+    #[Route('/list/{idArticle?}', name: 'front_commentaire_index', methods: ['GET'])]
     public function index(CommentaireRepository $commentaireRepository, $idArticle): Response
     {
-        if($idArticle === null){
+        if ($idArticle === null) {
             return $this->render('front/commentaire/index.html.twig', [
                 'commentaires' => $commentaireRepository->findAll(),
             ]);
-        }else{
+        } else {
             return $this->render('front/commentaire/index.html.twig', [
                 'commentaires' => $commentaireRepository->findBy(['fk_article' => $idArticle]),
             ]);
         }
-       # return $this->render('front/commentaire/index.html.twig', [
-           # 'commentaires' => $commentaireRepository->findAll(),
-        #]);
     }
 
     #[Route('/{id}', name: 'front_commentaire_show', methods: ['GET'])]

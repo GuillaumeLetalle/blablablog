@@ -1,30 +1,35 @@
-.entete{
+.entete {
     background-color: #4e73df;
     min-height: 13vh;
 }
-.homeTitle{
-   text-align: center;
-}
-.headerbtn{
+
+.homeTitle {
     text-align: center;
-    padding-bottom: 5vh;
 }
-.footer{
-    position: absolute;
+
+.headerbtn {
+    text-align: center;
+    padding-bottom: 2vh;
+}
+
+.footer {
     bottom: 0;
-    width:100%;
+    width: 100%;
     background-color: #4e73df;
-    min-height: 8vh;
+    min-height: 6vh;
 }
-.homePicture{
+
+.homePicture {
     text-align: center;
 }
-.imgPicture{
+
+.imgPicture {
     margin-top: 7vh;
     height: 35vh;
     border-radius: 25%;
 }
-a{
+
+a {
     text-decoration: none;
-    color: whitesmoke;
+    color: black;
 }

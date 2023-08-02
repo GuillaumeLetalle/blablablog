@@ -1,0 +1,17 @@
+{% extends 'account/base_account.html.twig' %}
+
+{% block title %}Categorie{% endblock %}
+
+{% block body %}
+    <h1>Categorie</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{ categorie.name }}</td>
+            <td><a href="{{ path('account_article_index', {'idCategorie': categorie.id}) }}">Les articles liés</a></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

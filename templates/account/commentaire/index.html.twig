@@ -1,18 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'account/base_account.html.twig' %}
 
 {% block title %}Commentaire index{% endblock %}
 
-{% block main %}
-    <h1>Commentaires</h1>
+{% block body %}
+    <h1>Commentaire index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Contenu</th>
-                <th>Date</th>
-                <th>actions</th>
-                <th>article</th>
-            </tr>
+        <tr>
+            <th>Contenu</th>
+            <th>Date</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for commentaire in commentaires %}
@@ -20,10 +19,8 @@
                 <td>{{ commentaire.contenu }}</td>
                 <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('front_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                </td>
-                <td>
-                    <a href="{{ path('front_article_show', {'id': commentaire.getFkArticle.id}) }}">Article</a>
+                    <a href="{{ path('account_commentaire_show', {'id': commentaire.id}) }}">show</a>
+                    <a href="{{ path('account_commentaire_delete', {'id': commentaire.id}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}
@@ -33,4 +30,5 @@
         {% endfor %}
         </tbody>
     </table>
+
 {% endblock %}

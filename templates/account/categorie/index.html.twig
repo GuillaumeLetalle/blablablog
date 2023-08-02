@@ -1,27 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'account/base_account.html.twig' %}
 
 {% block title %}Categorie index{% endblock %}
 
-{% block main %}
+{% block body %}
     <h1>Categories</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-                <th>Articles</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+            <th>Articles</th>
+        </tr>
         </thead>
         <tbody>
         {% for categorie in categories %}
             <tr>
                 <td>{{ categorie.name }}</td>
                 <td>
-                    <a href="{{ path('front_categorie_show', {'id': categorie.id}) }}">Détail</a>
+                    <a href="{{ path('account_categorie_show', {'id': categorie.id}) }}">Détail</a>
                 </td>
                 <td>
-                    <a href="{{ path('front_article_index', {'idCategorie': categorie.id}) }}">Articles liés</a>
+                    <a href="{{ path('account_article_index', {'idCategorie': categorie.id}) }}">Articles liés</a>
                 </td>
             </tr>
         {% else %}

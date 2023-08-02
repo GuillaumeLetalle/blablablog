@@ -2,7 +2,7 @@
 
 {% block title %}Categorie{% endblock %}
 
-{% block body %}
+{% block main %}
     <h1>Categorie</h1>
 
     <table class="table">
@@ -10,13 +10,8 @@
             <tr>
                 <th>Name</th>
                 <td>{{ categorie.name }}</td>
+                <td><a href="{{ path('front_article_index', {'idCategorie': categorie.id}) }}">Les articles liés</a></td>
             </tr>
         </tbody>
     </table>
-<div>
-    <a href="{{ path('front_categorie_index') }}">Retour à la liste des catégories</a>
-</div>
-<div>
-<a href="{{ path('front_article_index', {'idCategorie': categorie.id}) }}">Les articles liés à cette categorie</a>
-</div>
 {% endblock %}

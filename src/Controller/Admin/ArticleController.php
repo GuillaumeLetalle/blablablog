@@ -20,11 +20,11 @@ class ArticleController extends AbstractController
     #[Route('/list/{idCategorie?}', name: 'app_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository, $idCategorie): Response
     {
-        if($idCategorie === null){
+        if ($idCategorie === null) {
             return $this->render('admin/article/index.html.twig', [
                 'articles' => $articleRepository->findAll(),
             ]);
-        }else{
+        } else {
             return $this->render('admin/article/index.html.twig', [
                 'articles' => $articleRepository->findBy(['fk_categorie' => $idCategorie]),
             ]);
@@ -33,10 +33,10 @@ class ArticleController extends AbstractController
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        FileUploaderService $fileUploaderService,
-        $publicUploadDir,
+        FileUploaderService    $fileUploaderService,
+                               $publicUploadDir,
     ): Response
     {
 
@@ -53,9 +53,9 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $article->setDate($date);
 
-            $file= $form['image']->getData();
-            if($file){
-                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir );
+            $file = $form['image']->getData();
+            if ($file) {
+                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir);
             }
 
             $entityManager->persist($article);
@@ -80,20 +80,26 @@ class ArticleController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request $request,
-        Article $article,
+        Request                $request,
+        Article                $article,
         EntityManagerInterface $entityManager,
-        FileUploaderService $fileUploaderService,
-        $publicUploadDir,
+        FileUploaderService    $fileUploaderService,
+                               $publicUploadDir,
+                               $publicDeleteFileDir,
     ): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file= $form['image']->getData();
-            if($file){
-                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir );
+            $file = $form['image']->getData();
+
+            if ($file) {
+                $uow = $entityManager->getUnitOfWork();
+                $originalData = $uow->getOriginalEntityData($article);
+                $image = explode('/', $originalData['image']);
+                @unlink($publicDeleteFileDir . '/' . $image[2]);
+                $this->doUpload($file, $article, $fileUploaderService, $publicUploadDir);
             }
             $entityManager->flush();
 
@@ -109,7 +115,7 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
         }
@@ -117,10 +123,11 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function doUpload($file, $article, $fileUploaderService, $publicUploadDir ){
+    private function doUpload($file, $article, $fileUploaderService, $publicUploadDir)
+    {
         $file_name = $fileUploaderService->upload($file);
-        if ($file_name !== null){
-            $file_path = $publicUploadDir.'/'.$file_name;
+        if ($file_name !== null) {
+            $file_path = $publicUploadDir . '/' . $file_name;
             $article->setImage($file_path);
         }
     }
