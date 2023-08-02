@@ -26,6 +26,9 @@ class Commentaire
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column]
+    private ?bool $isvalide = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Commentaire
     public function setDate(?\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIsvalide(): ?bool
+    {
+        return $this->isvalide;
+    }
+
+    public function setIsvalide(bool $isvalide): static
+    {
+        $this->isvalide = $isvalide;
 
         return $this;
     }

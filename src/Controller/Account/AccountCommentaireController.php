@@ -7,7 +7,6 @@ use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentaireRepository;
 use Carbon\Carbon;
-use Cassandra\Date;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +19,7 @@ class AccountCommentaireController extends AbstractController
     #[Route('/list/{idArticle?}', name: 'account_commentaire_index', methods: ['GET'])]
     public function index(CommentaireRepository $commentaireRepository, $idArticle): Response
     {
+
         if ($idArticle === null) {
             return $this->render('account/commentaire/index.html.twig', [
                 'commentaires' => $commentaireRepository->findBy(['fk_user' => $this->getUser()]),
@@ -46,7 +46,7 @@ class AccountCommentaireController extends AbstractController
             $user = $this->getUser();
             $commentaire->setFkUser($user);
             $commentaire->setFkArticle($article);
-            // Todo $commentaire->setIsValidate(0);
+            $commentaire->setIsvalide(0);
             $entityManager->persist($commentaire);
             $entityManager->flush();
             return $this->redirectToRoute('account_commentaire_index', [], Response::HTTP_SEE_OTHER);
@@ -74,7 +74,7 @@ class AccountCommentaireController extends AbstractController
             $entityManager->remove($commentaire);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('account_commentaire_index', [], Response::HTTP_SEE_OTHER);
+        $user = $this->getUser();
+        return $this->redirectToRoute('account_commentaire_index', ['fk_user' => $user->getId()], Response::HTTP_SEE_OTHER);
     }
 }

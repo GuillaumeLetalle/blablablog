@@ -3,7 +3,7 @@
 {% block title %}Commentaire index{% endblock %}
 
 {% block body %}
-    <h1>Commentaire index</h1>
+    <h1>Commentaires validés</h1>
 
     <table class="table">
         <thead>
@@ -15,14 +15,16 @@
         </thead>
         <tbody>
         {% for commentaire in commentaires %}
-            <tr>
-                <td>{{ commentaire.contenu }}</td>
-                <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
-                <td>
-                    <a href="{{ path('account_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                    <a href="{{ path('account_commentaire_delete', {'id': commentaire.id}) }}">Delete</a>
-                </td>
-            </tr>
+            {% if commentaire.isValide == true %}
+                <tr>
+                    <td>{{ commentaire.contenu }}</td>
+                    <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
+                    <td>
+                        <a href="{{ path('account_commentaire_show', {'id': commentaire.id}) }}">show</a>
+                        <a href="{{ path('account_commentaire_delete', {'id': commentaire.id}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>

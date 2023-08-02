@@ -7,25 +7,27 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Contenu</th>
-                <th>Date</th>
-                <th>actions</th>
-                <th>article</th>
-            </tr>
+        <tr>
+            <th>Contenu</th>
+            <th>Date</th>
+            <th>actions</th>
+            <th>article</th>
+        </tr>
         </thead>
         <tbody>
         {% for commentaire in commentaires %}
-            <tr>
-                <td>{{ commentaire.contenu }}</td>
-                <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
-                <td>
-                    <a href="{{ path('front_commentaire_show', {'id': commentaire.id}) }}">show</a>
-                </td>
-                <td>
-                    <a href="{{ path('front_article_show', {'id': commentaire.getFkArticle.id}) }}">Article</a>
-                </td>
-            </tr>
+            {% if commentaire.isValide == true %}
+                <tr>
+                    <td>{{ commentaire.contenu }}</td>
+                    <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
+                    <td>
+                        <a href="{{ path('front_commentaire_show', {'id': commentaire.id}) }}">show</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('front_article_show', {'id': commentaire.getFkArticle.id}) }}">Article</a>
+                    </td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>

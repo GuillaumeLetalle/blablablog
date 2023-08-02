@@ -17,10 +17,12 @@ class AppFixtures extends Fixture
     private $faker;
     private $passwordHasher;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher){
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
         $this->passwordHasher = $passwordHasher;
         $this->faker = Factory::create('fr_FR');
     }
+
     public function load(ObjectManager $manager): void
     {
         $this->truncate($manager);
@@ -31,7 +33,8 @@ class AppFixtures extends Fixture
         $this->commentaireFixtures($manager);
     }
 
-    protected function teamFixtures($manager) : void{
+    protected function teamFixtures($manager): void
+    {
         $team = new Team;
         $team->setEmail('g.letalle@gmail.com');
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -47,10 +50,11 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function userFixtures($manager) : void{
-        for($i=1; $i<=35; $i++){
+    protected function userFixtures($manager): void
+    {
+        for ($i = 1; $i <= 35; $i++) {
             $user[$i] = new User;
-            $user[$i]->setEmail('user'. $i.'@gmail.fr');
+            $user[$i]->setEmail('user' . $i . '@gmail.fr');
             $user[$i]->setFirstname($this->faker->firstName);
             $user[$i]->setLastname($this->faker->lastName);
             $user[$i]->setRoles(['ROLE_IDENTIFIED']);
@@ -63,8 +67,9 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function categorieFixtures($manager) : void{
-        for($i=1; $i<=30;$i++){
+    protected function categorieFixtures($manager): void
+    {
+        for ($i = 1; $i <= 30; $i++) {
             $categorie[$i] = new Categorie();
             $categorie[$i]->setName($this->faker->name);
             $manager->persist($categorie[$i]);
@@ -72,8 +77,9 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function articleFixtures($manager) : void{
-        for($i=1; $i<=100; $i++){
+    protected function articleFixtures($manager): void
+    {
+        for ($i = 1; $i <= 100; $i++) {
             $article[$i] = new Article;
             $article[$i]->setContenu($this->faker->text(55));
             $article[$i]->setTitre($this->faker->word);
@@ -86,35 +92,40 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function commentaireFixtures($manager) : void{
-        for($i=1; $i<=500; $i++){
+    protected function commentaireFixtures($manager): void
+    {
+        for ($i = 1; $i <= 500; $i++) {
             $commentaire[$i] = new Commentaire();
             $commentaire[$i]->setContenu($this->faker->text(200));
             $commentaire[$i]->setDate($this->faker->dateTime());
             $commentaire[$i]->setFkUser($this->getRandomReference('App\Entity\User', $manager));
             $commentaire[$i]->setFkArticle($this->getRandomReference('App\Entity\Article', $manager));
+            $commentaire[$i]->setIsvalide(mt_rand(0, 1));
             $manager->persist($commentaire[$i]);
         }
         $manager->flush();
     }
 
-    protected function getReferencedObject(string $className, int $id, object $manager){
+    protected function getReferencedObject(string $className, int $id, object $manager)
+    {
         return $manager->find($className, $id);
     }
 
-    protected function getRandomReference(string $className, object $manager){
+    protected function getRandomReference(string $className, object $manager)
+    {
         $list = $manager->getRepository($className)->findAll();
         return $list[array_rand($list)];
     }
 
-    protected  function truncate($manager) : void{
+    protected function truncate($manager): void
+    {
         // @var Connection db
         $db = $manager->getConnection();
 
         //start new transaction
         $db->beginTransaction();
 
-        $sql ='
+        $sql = '
         SET FOREIGN_KEY_CHECKS = 0;
         TRUNCATE team;
         TRUNCATE user;

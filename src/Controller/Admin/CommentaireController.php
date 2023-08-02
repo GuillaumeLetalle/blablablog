@@ -30,6 +30,7 @@ class CommentaireController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $commentaire->setIsvalide(1);
             $entityManager->persist($commentaire);
             $entityManager->flush();
 
@@ -71,7 +72,7 @@ class CommentaireController extends AbstractController
     #[Route('/{id}', name: 'app_commentaire_delete', methods: ['POST'])]
     public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $commentaire->getId(), $request->request->get('_token'))) {
             $entityManager->remove($commentaire);
             $entityManager->flush();
         }
