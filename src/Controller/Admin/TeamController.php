@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Team;
 use App\Form\TeamType;
+use App\Repository\ArticleRepository;
+use App\Repository\CommentaireRepository;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +52,7 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_team_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
         return $this->render('admin/team/show.html.twig', [
@@ -60,8 +62,8 @@ class TeamController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_team_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request $request,
-        Team $team,
+        Request                $request,
+        Team                   $team,
         EntityManagerInterface $entityManager,
         //PasswordUpgraderInterface $passwordUpgrader,
     ): Response
@@ -70,7 +72,7 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           // $oldPassword = $team->getPassword();
+            // $oldPassword = $team->getPassword();
             $entityManager->flush();
 
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
@@ -82,10 +84,12 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
-    public function delete(Request $request, Team $team, EntityManagerInterface $entityManager): Response
+    #[Route('/delete/{id}', name: 'app_team_delete', methods: ['POST'])]
+    public function delete(Request $request, Team $team, EntityManagerInterface $entityManager, CommentaireRepository $commentaireRepository, ArticleRepository $articleRepository, $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $team->getId(), $request->request->get('_token'))) {
+            $commentaireRepository->setCommentsToNull($id);
+            $articleRepository->setTeamToNull($id);
             $entityManager->remove($team);
             $entityManager->flush();
         }

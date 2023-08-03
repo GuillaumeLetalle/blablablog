@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/base.html.twig' %}
 
 {% block title %}Categorie{% endblock %}
 
@@ -7,11 +7,11 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ categorie.name }}</td>
-                <td><a href="{{ path('front_article_index', {'idCategorie': categorie.id}) }}">Les articles liés</a></td>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ categorie.name }}</td>
+            <td><a href="{{ path('front_article_index', {'idCategorie': categorie.id}) }}">Les articles liés</a></td>
+        </tr>
         </tbody>
     </table>
 {% endblock %}

@@ -13,10 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AbstractController
 {
-    #[Route('/front', name: 'app_front')]
+    #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('front/index.html.twig', [
+        return $this->render('front/dashboard.html.twig', [
             'controller_name' => 'FrontController',
         ]);
     }

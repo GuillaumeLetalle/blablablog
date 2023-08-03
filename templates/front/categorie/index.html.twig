@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/base.html.twig' %}
 
 {% block title %}Categorie index{% endblock %}
 
@@ -7,11 +7,11 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-                <th>Articles</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+            <th>Articles</th>
+        </tr>
         </thead>
         <tbody>
         {% for categorie in categories %}

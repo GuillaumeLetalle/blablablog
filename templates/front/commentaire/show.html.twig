@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/base.html.twig' %}
 
 {% block title %}Commentaire{% endblock %}
 
@@ -7,14 +7,14 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ commentaire.contenu }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
-            </tr>
+        <tr>
+            <th>Contenu</th>
+            <td>{{ commentaire.contenu }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ commentaire.date ? commentaire.date|date('d-m-Y') : '' }}</td>
+        </tr>
         </tbody>
     </table>
 {% endblock %}

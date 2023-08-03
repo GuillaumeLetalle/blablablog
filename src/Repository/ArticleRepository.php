@@ -21,6 +21,15 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function setTeamToNull($idTeam)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            UPDATE article a set fk_team_id = null 
+            WHERE a.fk_team_id = ' . $idTeam;
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */

@@ -21,6 +21,15 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
+    public function setCommentsToNull($idUser)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            UPDATE commentaire c set fk_user_id = null 
+            WHERE c.fk_user_id = ' . $idUser;
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
 //     */

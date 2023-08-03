@@ -4,19 +4,18 @@
 
 {% block body %}
     <h1>Categorie index</h1>
+    <a href="{{ path('app_categorie_new') }}">Create new</a>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for categorie in categories %}
             <tr>
-                <td>{{ categorie.id }}</td>
                 <td>{{ categorie.name }}</td>
                 <td>
                     <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}">show</a>
@@ -31,5 +30,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_categorie_new') }}">Create new</a>
 {% endblock %}

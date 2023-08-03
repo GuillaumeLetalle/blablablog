@@ -16,7 +16,7 @@ class CommentaireType extends AbstractType
             ->add('date')
             ->add('fk_user')
             ->add('fk_article')
-        ;
+            ->add('isValide');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
