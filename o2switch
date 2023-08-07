@@ -1,0 +1,13 @@
+FTP o2swicth
+
+host: ftp.cdafcp202211-03.apform.o2switch.site
+user: cdafcp20221103ap
+mdp: DzzXNey=H71u
+port: 21
+
+Base de donnée: cdafcp20221103ap_BlablaBlog
+host: localhost
+nom: userdb
+mdp: =tKvIv}LEdWT
+
+Dmaine: cdafcp202211-03.apform.o2switch.site
