@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Front;
@@ -8,17 +9,18 @@ use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 #[Route('/front/article')]
 class FrontArticleController extends AbstractController
 {
     #[Route('/list/{idCategorie?}', name: 'front_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository, $idCategorie): Response
     {
-        if($idCategorie === null){
+        if ($idCategorie === null) {
             return $this->render('front/article/index.html.twig', [
                 'articles' => $articleRepository->findAll(),
             ]);
-        }else{
+        } else {
             return $this->render('front/article/index.html.twig', [
                 'articles' => $articleRepository->findBy(['fk_categorie' => $idCategorie]),
             ]);
