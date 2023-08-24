@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
@@ -19,10 +20,13 @@ use Symfony\Component\Security\Core\Security;
 class AccountUserController extends AbstractController
 {
 
-    #[Route('/edit', name: 'account_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    #[Route('/{id}/edit', name: 'account_user_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $user = $this->getUser();
+        //$user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -36,7 +40,6 @@ class AccountUserController extends AbstractController
             $user->setRoles(['ROLE_IDENTIFIED']);
             $entityManager->persist($user);
             $entityManager->flush();
-            $entityManager->flush();
 
             return $this->redirectToRoute('account_home');
         }
@@ -47,7 +50,7 @@ class AccountUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'account_user_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'account_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager, CommentaireRepository $commentaireRepository, $id): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {

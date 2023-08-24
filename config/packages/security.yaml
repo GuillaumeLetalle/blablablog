@@ -29,6 +29,7 @@ security :
     dev :
       pattern : ^/(_(profiler|wdt)|css|images|js)/
       security : false
+      
     admin_secure_area :
       pattern : ^/admin
       provider : app_team_provider

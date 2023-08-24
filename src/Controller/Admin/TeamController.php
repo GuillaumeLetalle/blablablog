@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+//use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 #[Route('/admin/team')]
 class TeamController extends AbstractController
@@ -65,6 +65,7 @@ class TeamController extends AbstractController
         Request                $request,
         Team                   $team,
         EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
         //PasswordUpgraderInterface $passwordUpgrader,
     ): Response
     {
@@ -72,7 +73,14 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $oldPassword = $team->getPassword();
+            $plaintextPassword = $team->getPassword();
+            $hasedPassword = $passwordHasher->hashPassword(
+                $team,
+                $plaintextPassword
+            );
+            $team->setPassword($hasedPassword);
+            $team->setRoles(['ROLE_ADMIN']);
+            $entityManager->persist($team);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
